@@ -1,25 +1,5 @@
 const BASE_URL = "http://localhost:3000";
 
-const currentUser = document.getElementById("current");
-currentUser.addEventListener("click", async (e) => {
-  e.preventDefault();
-  jwt = localStorage.getItem("jwt");
-  try {
-    const req = await fetch(`${BASE_URL}/current`, {
-      method: "get",
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-        Authorization: `bearer ${jwt}`,
-      },
-    });
-    const resp = await req.json();
-    document.getElementById("current_user").innerHTML = JSON.stringify(resp);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 const logout = document.getElementById("logout");
 logout.addEventListener("click", async (e) => {
   e.preventDefault();
@@ -35,6 +15,9 @@ logout.addEventListener("click", async (e) => {
     .then((res) => res.json())
     .then((msg) => {
       document.getElementById("current_user").innerHTML = "";
+      document.getElementById("jwt").innerHTML = "";
+      document.getElementById("current_user").innerHTML = "";
+
       localStorage.clear();
       console.log(msg);
     })
@@ -63,6 +46,7 @@ signup.addEventListener("submit", async (e) => {
     console.log(res.errors);
     if (!res.errors) {
       document.getElementById("jwt").innerHTML = JSON.stringify(res.jwt);
+      localStorage.setItem("jwt", res.jwt);
     } else {
       console.log(res.errors);
       document.getElementById("signinErrors").innerHTML = JSON.stringify(
@@ -94,7 +78,6 @@ login.addEventListener("submit", async (e) => {
       mode: "cors",
       body: formData,
       headers: {
-        // "X-CSRF-Token": getCookie("CSRF-TOKEN"),
         Accept: "application/json",
       },
     });
@@ -118,8 +101,6 @@ users.addEventListener("click", async (e) => {
   try {
     const request = await fetch(`${BASE_URL}/users`, {
       method: "GET",
-      mode: "cors",
-      credentials: "include",
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
@@ -133,6 +114,28 @@ users.addEventListener("click", async (e) => {
           JSON.stringify(response);
       }
     }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const currentUser = document.getElementById("current");
+currentUser.addEventListener("click", async (e) => {
+  e.preventDefault();
+  jwt = localStorage.getItem("jwt");
+  try {
+    const req = await fetch(`${BASE_URL}/current`, {
+      method: "get",
+      mode: "cors",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        Authorization: `bearer ${jwt}`,
+      },
+    });
+    const resp = await req.json();
+    console.log(resp);
+    document.getElementById("current_user").innerHTML = JSON.stringify(resp);
   } catch (error) {
     console.log(error);
   }

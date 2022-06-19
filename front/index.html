@@ -10,9 +10,9 @@
 
 <body>
    <div style="display: flex; align-items: center">
-      <h1 style="width: 250%;">Rails API with JWT authentication with Cookie HttpOnly</h1>
+      <h1 style="width: 250%;">Rails API with JWT authentication with Authorization</h1>
       <h5>
-         <code>The "fetch" front-side needs "credentials: include" && the CORS back-end needs "credentials: true". Also "include ActionController::Cookies".</code>
+         <code>The "fetch" front-side passes the token in the header "Authorization: bearer -token-" and sstores it in the browser localStorage</code>
       </h5>
    </div>
    <p>
@@ -54,15 +54,16 @@
    <p><button id="logout">LogOut</button></p>
    <hr>
    <p>
-      <button id="users">Users</button>
-   <p id="users_list"></p>
-   </p>
-   <p>
       <button id="current">Current</button>
    <p id="current_user"></p>
    </p>
    <hr>
    <p id="jwt"></p>
+   <hr>
+   <p>
+      <button id="users">Users</button>
+   <p id="users_list"></p>
+   </p>
 
 
 </body>
