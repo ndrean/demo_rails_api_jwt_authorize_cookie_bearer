@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
   def current
     jwt = decode(cookies.signed[:jwt])
-    render(json: { user: jwt['email'], jwt: }, status: :ok)
+    render(json: { jwt: }, status: :ok)
   end
 
   def show

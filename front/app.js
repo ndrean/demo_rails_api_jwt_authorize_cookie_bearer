@@ -38,7 +38,12 @@ logout.addEventListener("click", async (e) => {
     },
   })
     .then((res) => res.json())
-    .then((msg) => console.log(msg))
+    .then((msg) => {
+      document.getElementById("jwt").innerHTML = "";
+      document.getElementById("current_user").innerHTML = "";
+      console.log(msg);
+    })
+
     .catch((err) => console.log(err));
 });
 
