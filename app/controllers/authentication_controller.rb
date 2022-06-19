@@ -1,0 +1,43 @@
+# frozen_string_literal: true
+
+# defines the login/logout/signup methods
+class AuthenticationController < ApplicationController
+  include JwtWebToken
+  skip_before_action :authenticate_request
+
+  def logout
+    cookies.delete(:jwt, domain: 'localhost')
+    render(json: { message: 'succesfully logged out' }, status: :ok)
+  end
+
+  def login
+    user = User.find_by_email(params[:email])
+    checked = user&.authenticate(params[:password])
+    return render(json: { error: 'Not found' }, status: 404) unless checked
+
+    jwt = set_cookie(user.id, user.email)
+    render(json: { message: 'Welcome back!', jwt: }, status: :ok)
+  end
+
+  def signup
+    user_params = params.permit(:email, :name, :password)
+    user = User.create!(user_params)
+
+    jwt = set_cookie(user.id, user.email)
+    render(json: { message: 'Welcome', user: user.email, jwt: }, status: :ok)
+  rescue ActiveRecord::RecordInvalid => e
+    render(json: { errors: e.record.errors }, status: 422)
+  end
+
+  def set_cookie(id, email)
+    jwt = encode({ id:, email: })
+    cookies.signed[:jwt] = {
+      value: jwt,
+      httponly: true,
+      expires: 1.hour.from_now,
+      same_site: :lax,
+      domain: 'localhost'
+    }
+    jwt
+  end
+end

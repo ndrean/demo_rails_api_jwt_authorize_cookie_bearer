@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>JWT Cookie HttpOnly</title>
+</head>
+
+<body>
+   <div style="display: flex; align-items: center">
+      <h1 style="width: 250%;">Rails API with JWT authentication with Cookie HttpOnly</h1>
+      <h5>
+         <code>The "fetch" front-side needs "credentials: include" && the CORS back-end needs "credentials: true". Also "include ActionController::Cookies".</code>
+      </h5>
+   </div>
+   <p>
+   <form name="signup" method="post">
+      <fieldset
+         style="display: flex; flex-wrap: wrap; justify-content: space-between; row-gap: 10px; column-gap: 20px;">
+         <legend> <button id="signup">SignUp</button></legend>
+
+         <label for="namesgn">Name
+            <input type="text" id="namesgn" name="name">
+         </label>
+         <label for="emailsgn">Email
+            <input type="text" id="emailsgn" name="email">
+         </label>
+         <label for="passwordsgn">Password
+            <input type="password" id="passwordsgn" name="password" autocomplete="password">
+         </label>
+      </fieldset>
+      <p id="signinErrors"></p>
+   </form>
+   </p>
+   <hr>
+   <p>
+   <form name="login" method="post" style="display: flex; flex-wrap: wrap">
+      <fieldset
+         style="display: flex; flex-wrap: wrap; justify-content: space-between; row-gap: 50px; column-gap: 20px;">
+         <legend> <button id="login">Login</button></legend>
+
+         <label for="emaillog">Email
+            <input type="text" id="emaillog" name="email">
+         </label>
+         <label for="passwordlog">Password
+            <input type="password" id="passwordlog" name="password" autocomplete="password">
+         </label>
+      </fieldset>
+   </form>
+   </p>
+   <hr>
+   <p><button id="logout">LogOut</button></p>
+   <hr>
+   <p>
+      <button id="users">Users</button>
+   <p id="users_list"></p>
+   </p>
+   <p>
+      <button id="current">Current</button>
+   <p id="current_user"></p>
+   </p>
+   <hr>
+   <p id="jwt"></p>
+
+
+</body>
+<script src="./app.js"></script>
+
+</html>
