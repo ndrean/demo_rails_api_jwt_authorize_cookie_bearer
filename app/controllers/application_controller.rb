@@ -14,7 +14,6 @@ class ApplicationController < ActionController::API
 
     jwt_token = bearer.split(' ').last
     @current_user = decode(jwt_token)
-    # render(json: { user: @current_user[:email] }, status: :ok) unless jwt_token
   end
 
   # def set_csrf_cookie
