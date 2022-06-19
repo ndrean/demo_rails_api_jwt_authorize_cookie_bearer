@@ -15,7 +15,7 @@ Two versions: "main" with a cookie, "jwt-authenticate" with bearer.
 
 - "main" with HttpOnly cookie. Needs the header `credentials: 'include'` front-side,  and for the back-end, we need "cors" with "credentials: true" in the CORS intializer back-end and the midlleware "  include ActionController::Cookies". Except singup and login, every request includes the cookie that the back-end reads and decodes. The jwt gem returns the decoded token or "error" (expired of invalid).
 
-- "jwt-authenticate with Authorization. The token is saved in **localStorage**. We only need to pass a header "Authorization: bearer -jwt_token-" on each request for authentication (except the signup and login). The jwt decodes.
+- "jwt-authenticate with Authorization. The token is saved in **localStorage**. We only need to pass a header "Authorization: bearer -jwt_token-" on each request for authentication (except the signup and login). The jwt decodes or returns an error (expired or invalid).
 
 [The source](https://www.thegreatcodeadventure.com/jwt-storage-in-rails-the-right-way/)
 
