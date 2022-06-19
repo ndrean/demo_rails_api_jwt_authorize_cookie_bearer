@@ -1,22 +1,16 @@
 const BASE_URL = "http://localhost:3000";
 
-// send the CRSF cookie for POST/PUT/PATCH requests
-// function getCSRFToken() {
-//   const splitCookies = document.cookie.split("; ");
-//   return splitCookies
-//     .find((cookie) => cookie.startsWith("CSRF-TOKEN="))
-//     .split("=")[1];
-// }
-
 const currentUser = document.getElementById("current");
 currentUser.addEventListener("click", async (e) => {
+  e.preventDefault();
+  jwt = localStorage.getItem("jwt");
   try {
     const req = await fetch(`${BASE_URL}/current`, {
       method: "get",
-      credentials: "include",
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        Authorization: `bearer ${jwt}`,
       },
     });
     const resp = await req.json();
@@ -31,14 +25,19 @@ logout.addEventListener("click", async (e) => {
   e.preventDefault();
   return await fetch(`${BASE_URL}/logout`, {
     method: "GET",
-    credentials: "include",
+    mode: "cors",
     hearders: {
       "Content-type": "application/json",
       Accept: "application/json",
+      Authorization: `bearer ${jwt}`,
     },
   })
     .then((res) => res.json())
-    .then((msg) => console.log(msg))
+    .then((msg) => {
+      document.getElementById("current_user").innerHTML = "";
+      localStorage.clear();
+      console.log(msg);
+    })
     .catch((err) => console.log(err));
 });
 
@@ -54,7 +53,7 @@ signup.addEventListener("submit", async (e) => {
   try {
     const req = await fetch(`${BASE_URL}/signup`, {
       method: "POST",
-      credentials: "include",
+      mode: "cors",
       body: formData,
       headers: {
         Accept: "application/json",
@@ -92,7 +91,7 @@ login.addEventListener("submit", async (e) => {
   try {
     const req = await fetch(`${BASE_URL}/login`, {
       method: "POST",
-      credentials: "include",
+      mode: "cors",
       body: formData,
       headers: {
         // "X-CSRF-Token": getCookie("CSRF-TOKEN"),
@@ -102,6 +101,7 @@ login.addEventListener("submit", async (e) => {
     const res = await req.json();
     if (!res.errors) {
       document.getElementById("jwt").innerHTML = JSON.stringify(res.jwt);
+      localStorage.setItem("jwt", res.jwt);
     } else {
       console.log(res);
     }
@@ -114,6 +114,7 @@ login.addEventListener("submit", async (e) => {
 const users = document.getElementById("users");
 users.addEventListener("click", async (e) => {
   e.preventDefault();
+  jwToken = localStorage.getItem("jwt");
   try {
     const request = await fetch(`${BASE_URL}/users`, {
       method: "GET",
@@ -122,6 +123,7 @@ users.addEventListener("click", async (e) => {
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
+        Authorization: `bearer ${jwToken}`,
       },
     });
     if (request) {
