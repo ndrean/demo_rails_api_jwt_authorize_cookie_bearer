@@ -1,5 +1,13 @@
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 
+// testing.
+// we exported a default function named upon the file.
+
+import defaultExportFun, { two, three } from './test1';
+import oneTwo, { oneThree } from './test2';
+
+console.log(oneTwo(), defaultExportFun(), two(), three, oneThree());
+
 const BASE_URL = 'http://localhost:3000';
 
 const { signup } = document.forms;
@@ -14,7 +22,7 @@ signup.addEventListener('submit', async (e) => {
   try {
     const req = await fetch(`${BASE_URL}/signup`, {
       method: 'POST',
-      mode: 'cors',
+      // mode: 'cors', it's a default
       body: formData,
       headers: {
         Accept: 'application/json',
@@ -50,7 +58,6 @@ login.addEventListener('submit', async (e) => {
   try {
     const req = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
-      mode: 'cors',
       body: formData,
       headers: {
         Accept: 'application/json',
@@ -76,6 +83,7 @@ users.addEventListener('click', async (e) => {
   const jwToken = localStorage.getItem('jwt');
   try {
     const request = await fetch(`${BASE_URL}/users`, {
+      // method: 'GET', default
       headers: {
         'Content-type': 'application/json',
         Accept: 'application/json',
@@ -99,7 +107,6 @@ currentUser.addEventListener('click', async (e) => {
   const jwToken = localStorage.getItem('jwt');
   try {
     const req = await fetch(`${BASE_URL}/current`, {
-      mode: 'cors',
       headers: {
         'Content-type': 'application/json',
         Accept: 'application/json',
@@ -121,7 +128,6 @@ logout.addEventListener('click', async (e) => {
   e.preventDefault();
   const jwToken = localStorage.getItem('jwt');
   return fetch(`${BASE_URL}/logout`, {
-    mode: 'cors',
     hearders: {
       'Content-type': 'application/json',
       Accept: 'application/json',
