@@ -1,3 +1,4 @@
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 const BASE_URL = 'http://localhost:3000';
 
 // !! RAILS does not want headers: { "Content-type": "application/json"} when formdata !!
@@ -57,12 +58,13 @@ login.addEventListener('submit', async (e) => {
       },
     });
     const res = await req.json();
-    if (!res.errors) {
+    console.log(res);
+    if (!res.error) {
       console.log(res);
       document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
     } else {
       document.getElementById('loginErrors').innerHTML = JSON.stringify(
-        res.errors,
+        res.error,
       );
     }
     login.reset();
@@ -103,7 +105,8 @@ logout.addEventListener('click', async (e) => {
     .then((msg) => {
       document.getElementById('jwt').innerHTML = '';
       document.getElementById('current_user').innerHTML = '';
-      alert(msg.message);
+      document.getElementById('users_list').innerHTML = '';
+      console.log(msg.message);
     })
     .catch((err) => console.error(err));
 });

@@ -33,3 +33,16 @@ parcel index.html
 [Source](https://learn.co/lessons/jwt-auth-rails)
 
 [Notes on session in Rails](https://orbit.love/blog/managing-server-side-sessions-in-rails)
+
+## Eslint and [Prettier](https://prettier.io/docs/en/options.html)
+
+```bash
+npm init @eslint/config
+npx eslint app.js
+```
+
+Add the following to avoid warnings: [Eslint](https://eslint.org/docs/rules/no-console)
+
+```js
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
+```
