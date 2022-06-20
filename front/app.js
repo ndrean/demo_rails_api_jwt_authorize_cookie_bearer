@@ -116,7 +116,8 @@ users.addEventListener('click', async (e) => {
   e.preventDefault();
   try {
     const request = await fetch(`${BASE_URL}/users`, {
-      mode: 'cors',
+      // method: 'GET', default values
+      // mode: 'cors',
       credentials: 'include',
       headers: {
         'Content-type': 'application/json',

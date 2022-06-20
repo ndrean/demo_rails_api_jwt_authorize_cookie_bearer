@@ -46,3 +46,9 @@ Add the following to avoid warnings: [Eslint](https://eslint.org/docs/rules/no-c
 ```js
 /* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 ```
+
+## About [CORS](https://jakearchibald.com/2021/cors/)
+
+## About [Formdata](https://jakearchibald.com/2021/encoding-data-for-post-requests/)
+
+## About [import-exports](https://jakearchibald.com/2021/export-default-thing-vs-thing-as-default/)
