@@ -21,14 +21,13 @@ signup.addEventListener('submit', async (e) => {
       },
     });
     const res = await req.json();
-    console.log(res.errors);
-    if (!res.errors) {
+    if (!res.error) {
       console.log(res);
       document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
       localStorage.setItem('jwt', res.jwt);
     } else {
-      console.log(res.errors);
-      document.getElementById('signinErrors').innerHTML = JSON.stringify(res.errors);
+      console.log(res.error);
+      document.getElementById('signinErrors').innerHTML = `ActiveRecord: ${JSON.stringify(res.error)}`;
     }
     signup.reset();
   } catch (error) {
@@ -58,11 +57,12 @@ login.addEventListener('submit', async (e) => {
       },
     });
     const res = await req.json();
-    if (!res.errors) {
+    if (!res.error) {
       document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
       localStorage.setItem('jwt', res.jwt);
     } else {
-      console.log(res);
+      console.log(res.error);
+      document.getElementById('loginErrors').innerHTML = JSON.stringify(res.error);
     }
     login.reset();
   } catch (error) {

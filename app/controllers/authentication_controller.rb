@@ -24,6 +24,6 @@ class AuthenticationController < ApplicationController
     jwt = encode({ id: user.id, email: user.email })
     render(json: { message: 'Welcome', user: user.email, jwt: }, status: :ok)
   rescue ActiveRecord::RecordInvalid => e
-    render(json: { errors: e.record.errors }, status: 422)
+    render(json: { error: e.record.errors }, status: 422)
   end
 end
