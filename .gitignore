@@ -37,3 +37,4 @@
 /front/.cache/*
 /front/build/*
 /front/dist
+node_modules

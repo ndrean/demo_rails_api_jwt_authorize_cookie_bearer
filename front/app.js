@@ -1,142 +1,141 @@
-const BASE_URL = "http://localhost:3000";
+/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 
-const logout = document.getElementById("logout");
-logout.addEventListener("click", async (e) => {
-  e.preventDefault();
-  return await fetch(`${BASE_URL}/logout`, {
-    method: "GET",
-    mode: "cors",
-    hearders: {
-      "Content-type": "application/json",
-      Accept: "application/json",
-      Authorization: `bearer ${jwt}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((msg) => {
-      document.getElementById("current_user").innerHTML = "";
-      document.getElementById("jwt").innerHTML = "";
-      document.getElementById("current_user").innerHTML = "";
+const BASE_URL = 'http://localhost:3000';
 
-      localStorage.clear();
-      console.log(msg);
-    })
-    .catch((err) => console.log(err));
-});
-
-const signup = document.forms["signup"];
-signup.addEventListener("submit", async (e) => {
+const { signup } = document.forms;
+signup.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const formData = new FormData(signup);
-  [...formData.entries()].forEach((e) => {
-    formData.append(e[0], e[1]);
+  [...formData.entries()].forEach((elt) => {
+    formData.append(elt[0], elt[1]);
   });
 
   try {
     const req = await fetch(`${BASE_URL}/signup`, {
-      method: "POST",
-      mode: "cors",
+      method: 'POST',
+      mode: 'cors',
       body: formData,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     });
     const res = await req.json();
     console.log(res.errors);
     if (!res.errors) {
-      document.getElementById("jwt").innerHTML = JSON.stringify(res.jwt);
-      localStorage.setItem("jwt", res.jwt);
+      console.log(res);
+      document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
+      localStorage.setItem('jwt', res.jwt);
     } else {
       console.log(res.errors);
-      document.getElementById("signinErrors").innerHTML = JSON.stringify(
-        res.errors
-      );
+      document.getElementById('signinErrors').innerHTML = JSON.stringify(res.errors);
     }
-    console.log(res);
     signup.reset();
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 
 // !!!!! RAILS does not want headers: { "Content-type": "application/json"} when formdata !!!!!
 
 /// POST LOGIN
-const login = document.forms["login"];
-login.addEventListener("submit", async (e) => {
+const { login } = document.forms;
+login.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const formData = new FormData(login);
-  [...formData.entries()].forEach((e) => {
-    formData.append(e[0], e[1]);
+  [...formData.entries()].forEach((elt) => {
+    formData.append(elt[0], elt[1]);
   });
 
   try {
     const req = await fetch(`${BASE_URL}/login`, {
-      method: "POST",
-      mode: "cors",
+      method: 'POST',
+      mode: 'cors',
       body: formData,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     });
     const res = await req.json();
     if (!res.errors) {
-      document.getElementById("jwt").innerHTML = JSON.stringify(res.jwt);
-      localStorage.setItem("jwt", res.jwt);
+      document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
+      localStorage.setItem('jwt', res.jwt);
     } else {
       console.log(res);
     }
     login.reset();
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 
-const users = document.getElementById("users");
-users.addEventListener("click", async (e) => {
+const users = document.getElementById('users');
+users.addEventListener('click', async (e) => {
   e.preventDefault();
-  jwToken = localStorage.getItem("jwt");
+  const jwToken = localStorage.getItem('jwt');
   try {
     const request = await fetch(`${BASE_URL}/users`, {
-      method: "GET",
       headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
+        'Content-type': 'application/json',
+        Accept: 'application/json',
         Authorization: `bearer ${jwToken}`,
       },
     });
     if (request) {
       const response = await request.json();
       if (!response.error) {
-        document.getElementById("users_list").innerHTML =
-          JSON.stringify(response);
+        document.getElementById('users_list').innerHTML = JSON.stringify(response);
       }
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 
-const currentUser = document.getElementById("current");
-currentUser.addEventListener("click", async (e) => {
+const currentUser = document.getElementById('current');
+currentUser.addEventListener('click', async (e) => {
   e.preventDefault();
-  jwt = localStorage.getItem("jwt");
+  const jwToken = localStorage.getItem('jwt');
   try {
     const req = await fetch(`${BASE_URL}/current`, {
-      method: "get",
-      mode: "cors",
+      mode: 'cors',
       headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-        Authorization: `bearer ${jwt}`,
+        'Content-type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `bearer ${jwToken}`,
       },
     });
     const resp = await req.json();
-    console.log(resp);
-    document.getElementById("current_user").innerHTML = JSON.stringify(resp);
+    if (resp) {
+      console.log(resp);
+      document.getElementById('current_user').innerHTML = JSON.stringify(resp);
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
+});
+
+const logout = document.getElementById('logout');
+logout.addEventListener('click', async (e) => {
+  e.preventDefault();
+  const jwToken = localStorage.getItem('jwt');
+  return fetch(`${BASE_URL}/logout`, {
+    mode: 'cors',
+    hearders: {
+      'Content-type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `bearer ${jwToken}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((msg) => {
+      document.getElementById('current_user').innerHTML = '';
+      document.getElementById('jwt').innerHTML = '';
+      document.getElementById('users_list').innerHTML = '';
+
+      localStorage.clear();
+      console.log(msg);
+    })
+    .catch((err) => console.error(err));
 });
