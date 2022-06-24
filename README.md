@@ -26,6 +26,8 @@ parcel index.html
 
 ## Sources
 
+[waitForSubmit](https://www.gimtec.io/articles/convert-on-click-to-promise/)
+
 [For cookie](https://www.thegreatcodeadventure.com/jwt-storage-in-rails-the-right-way/)
 
 [Note on Csrf](https://blog.eq8.eu/article/rails-api-authentication-with-spa-csrf-tokens.html)

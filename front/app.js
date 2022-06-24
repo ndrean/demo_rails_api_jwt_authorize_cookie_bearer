@@ -10,10 +10,21 @@ console.log(oneTwo(), defaultExportFun(), two(), three, oneThree());
 
 const BASE_URL = 'http://localhost:3000';
 
-const { signup } = document.forms;
-signup.addEventListener('submit', async (e) => {
-  e.preventDefault();
+HTMLElement.prototype.waitForSubmit = function() {
+  return new Promise((resolve) => {
+    this.addEventListener("submit", (e) => {
+      e.preventDefault()
+      resolve();
+    });
+  });
+};
 
+
+
+const { signup } = document.forms;
+
+const doSignUp = async () => {
+  await signup.waitForSubmit()
   const formData = new FormData(signup);
   [...formData.entries()].forEach((elt) => {
     formData.append(elt[0], elt[1]);
@@ -41,15 +52,16 @@ signup.addEventListener('submit', async (e) => {
   } catch (error) {
     console.error(error);
   }
-});
+};
+
+
 
 // !!!!! RAILS does not want headers: { "Content-type": "application/json"} when formdata !!!!!
 
 /// POST LOGIN
 const { login } = document.forms;
-login.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
+const doLogin = async () => {
+  await login.waitForSubmit()
   const formData = new FormData(login);
   [...formData.entries()].forEach((elt) => {
     formData.append(elt[0], elt[1]);
@@ -75,8 +87,11 @@ login.addEventListener('submit', async (e) => {
   } catch (error) {
     console.error(error);
   }
-});
+}
 
+doSignUp()
+doLogin()
+  
 const users = document.getElementById('users');
 users.addEventListener('click', async (e) => {
   e.preventDefault();
