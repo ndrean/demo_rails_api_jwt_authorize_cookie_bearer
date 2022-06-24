@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # defines the login/logout/signup methods
-class AuthenticationController < ApplicationController
+class AuthorizationController < ApplicationController
   include JwtWebToken
-  skip_before_action :authenticate_request
+  skip_before_action :authorize_request
 
   def logout
     cookies.delete(:jwt, domain: 'localhost')
@@ -12,6 +12,7 @@ class AuthenticationController < ApplicationController
 
   def login
     user = User.find_by_email(params[:email])
+    # Bcrypt method
     checked = user&.authenticate(params[:password])
     return render(json: { error: 'Not found' }, status: 404) unless checked
 
@@ -26,7 +27,7 @@ class AuthenticationController < ApplicationController
     jwt = set_cookie(user.id, user.email)
     render(json: { message: 'Welcome', user: user.email, jwt: }, status: :ok)
   rescue ActiveRecord::RecordInvalid => e
-    render(json: { errors: e.record.errors }, status: 422)
+    render(json: { error: e.record.errors }, status: 422)
   end
 
   def set_cookie(id, email)
@@ -34,7 +35,7 @@ class AuthenticationController < ApplicationController
     cookies.signed[:jwt] = {
       value: jwt,
       httponly: true,
-      expires: 1.hour.from_now,
+      expires: 1.minute.from_now,
       same_site: :lax,
       domain: 'localhost'
     }

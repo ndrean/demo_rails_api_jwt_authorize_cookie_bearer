@@ -5,11 +5,11 @@ class ApplicationController < ActionController::API
   include ActionController::Cookies
   include JwtWebToken
 
-  before_action :authenticate_request
+  before_action :authorize_request
 
   private
 
-  def authenticate_request
+  def authorize_request
     jwt = cookies.signed[:jwt]
     token = decode(jwt)
     render(json: { error: 'Unauthorized' }, status: 401) unless token

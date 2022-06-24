@@ -3,6 +3,19 @@ const BASE_URL = 'http://localhost:3000';
 
 // !! RAILS does not want headers: { "Content-type": "application/json"} when formdata !!
 
+function setResponse(id, res) {
+  console.log(res);
+  if (!res.error) {
+    document.getElementById(id).innerHTML = ''
+    document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
+  } else {
+    document.getElementById('jwt').innerHTML = ''
+    document.getElementById(id).innerHTML = JSON.stringify(
+      res.error,
+    );
+  }
+}
+
 HTMLElement.prototype.awaitForSubmit = function() {
   return new Promise((resolve) => {
     this.addEventListener("submit", (e) => {
@@ -32,20 +45,15 @@ const doSignUp = async () => {
       },
     });
     const res = await req.json();
-    if (!res.errors) {
-      console.log(res);
-      document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
-    } else {
-      document.getElementById('signinErrors').innerHTML = JSON.stringify(
-        res.errors,
-      );
-    }
+    setResponse('signinErrors', res);
     signup.reset();
+    doSignUp();
   } catch (error) {
     console.error(error);
   }
 }
 doSignUp();
+
 
 // LOGIN => POST
 const { login } = document.forms;
@@ -67,15 +75,7 @@ login.addEventListener('submit', async (e)=> {
       },
     });
     const res = await req.json();
-    console.log(res);
-    if (!res.error) {
-      console.log(res);
-      document.getElementById('jwt').innerHTML = JSON.stringify(res.jwt);
-    } else {
-      document.getElementById('loginErrors').innerHTML = JSON.stringify(
-        res.error,
-      );
-    }
+    setResponse('loginErrors', res)
     login.reset();
   } catch (error) {
     console.error(error);

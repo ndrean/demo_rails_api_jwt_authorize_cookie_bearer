@@ -2,7 +2,7 @@
 
 # user controller actions are protected by authnetification except the creation!
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: :create
+  skip_before_action :authorize_request, only: :create
   before_action :set_user, only: %i[show destroy]
 
   include JwtWebToken
