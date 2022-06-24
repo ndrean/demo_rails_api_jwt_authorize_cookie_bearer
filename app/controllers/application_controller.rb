@@ -1,27 +1,30 @@
 # frozen_string_literal: true
 
-# authentication before any other controler action
+# authorization before any other controler action
 class ApplicationController < ActionController::API
   include JwtWebToken
   # after_action :set_csrf_cookie
-  before_action :authenticate_request
+  before_action :authorize_request
 
   private
 
-  def authenticate_request
+  def authorize_request
     bearer = request.headers['Authorization']
     return render(json: { error: 'Unauthorized' }, status: 401) unless bearer
 
     jwt_token = bearer.split(' ').last
-    @current_user = decode(jwt_token)
-  end
+    # decode is rescued with error if expired
+    jwt = decode(jwt_token)
 
-  # def set_csrf_cookie
-  #   cookies["CSRF-TOKEN"] = {
-  #     value: form_authenticity_token,
-  #     secure: true,
-  #     same_site: :strict
-  #     domain: 'localhost'
-  #   }
-  # end
+    @current_user = { email: jwt['email'], iat: jwt['iat'], exp: jwt['exp'] }
+  end
 end
+
+# def set_csrf_cookie
+#   cookies["CSRF-TOKEN"] = {
+#     value: form_authenticity_token,
+#     secure: true,
+#     same_site: :strict
+#     domain: 'localhost'
+#   }
+# end

@@ -2,7 +2,7 @@
 
 # user controller actions are protected by authnetification except the creation!
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: :create
+  skip_before_action :authorize_request, only: :create
 
   include JwtWebToken
 
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
   def current
     # the authenticate_request returns an instance variable
-    render(json: { user: @current_user['email'] }, status: :ok)
+    render(json: { user: @current_user[:email], issued_at: @current_user[:iat], exp: @current_user[:exp] }, status: :ok)
   end
 
   def show
