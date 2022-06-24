@@ -7,11 +7,11 @@ The "jwt" produces JwtTokens from a secret salt (used Rails.secret_key here). It
 
 ## Two branches, cookie and bearer
 
-Two versions: "main" with a cookie, "jwt-authenticate" with bearer.
+Two versions: "main" with a cookie, "jwt-authorize" with bearer.
 
 - "main" with HttpOnly cookie. Needs the header `credentials: 'include'` front-side,  and for the back-end, we need "cors" with "credentials: true" in the CORS intializer back-end and the midlleware "  include ActionController::Cookies". Except signup and login, every request includes the cookie that the back-end reads and decodes. The jwt gem returns the decoded token or "error" (expired of invalid). The session is not saved to the database.
 
-- "jwt-authenticate" with Authorization. The token is saved in **localStorage**. We only need to pass a header "Authorization: bearer -jwt_token-" on each request for authentication (except the signup and login). The jwt decodes or returns an error (expired or invalid).
+- "jwt-authorize" with Authorization. The token is saved in **localStorage**. We only need to pass a header "Authorization: bearer -jwt_token-" on each request for authorization (except the signup and login). The jwt decodes or returns an error (expired or invalid).
 
 ## Run
 
