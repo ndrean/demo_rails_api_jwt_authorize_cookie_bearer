@@ -3,11 +3,20 @@ const BASE_URL = 'http://localhost:3000';
 
 // !! RAILS does not want headers: { "Content-type": "application/json"} when formdata !!
 
+HTMLElement.prototype.awaitForSubmit = function() {
+  return new Promise((resolve) => {
+    this.addEventListener("submit", (e) => {
+      e.preventDefault()
+      resolve();
+    });
+  });
+};
+
 // SIGNUP => POST
 const { signup } = document.forms;
-signup.addEventListener('submit', async (e) => {
-  e.preventDefault();
 
+const doSignUp = async () => {
+  await signup.awaitForSubmit()
   const formData = new FormData(signup);
   [...formData.entries()].forEach((elt) => {
     formData.append(elt[0], elt[1]);
@@ -35,18 +44,18 @@ signup.addEventListener('submit', async (e) => {
   } catch (error) {
     console.error(error);
   }
-});
+}
+doSignUp();
 
 // LOGIN => POST
 const { login } = document.forms;
 // const login = document.forms["login"];
-login.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
+login.addEventListener('submit', async (e)=> {
+  e.preventDefault()
   const formData = new FormData(login);
-  [...formData.entries()].forEach((elt) => {
-    formData.append(elt[0], elt[1]);
-  });
+    [...formData.entries()].forEach((elt) => {
+      formData.append(elt[0], elt[1]);
+    });
 
   try {
     const req = await fetch(`${BASE_URL}/login`, {
@@ -71,7 +80,8 @@ login.addEventListener('submit', async (e) => {
   } catch (error) {
     console.error(error);
   }
-});
+})
+  
 
 const currentUser = document.getElementById('current');
 currentUser.addEventListener('click', async (e) => {
